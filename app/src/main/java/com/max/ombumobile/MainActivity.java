@@ -48,20 +48,28 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         JSONObject obj = null;
         try {
             obj = new JSONObject(output);
-            Log.d("My App", obj.toString());
+            Log.d(getString(R.string.app_name), obj.toString());
         } catch (Throwable t) {
-            Log.e("My App", "Could not parse malformed JSON: \"" + output + "\"");
+            Log.e(getString(R.string.app_name), "Could not parse malformed JSON: \"" + output + "\"");
         }
 
         try {
             Toast toast = Toast.makeText(getBaseContext(), obj.getString("status") + ": " + obj.getString("message"), Toast.LENGTH_SHORT);
             toast.show();
             if(obj.getString("status").equals( "OK")){
-
-                // Menu Tecnico
-                Intent intent = new Intent(this, MenuTecnico.class);
-                startActivity(intent);
-
+                Usuario usr = Usuario.getInstance(getBaseContext());
+                JSONObject data = new JSONObject(obj.getString("data"));
+                usr.load(data);
+                if(usr.esTecnico()){
+                    // Menu Tecnico
+                    Intent intent = new Intent(this, MenuTecnico.class);
+                    startActivity(intent);
+                } else {
+                    // Menu Usuario general
+                    Intent intent = new Intent(this, Menu.class);
+                    startActivity(intent);
+                }
+                //editText_Pass.setText("");
             }
         } catch (JSONException e) {
             e.printStackTrace();

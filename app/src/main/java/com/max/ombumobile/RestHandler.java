@@ -24,7 +24,6 @@ public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
     //public static final String REST_ACTION_LOGIN = "http://10.0.2.2/kiwi/www/webservices/denuncia/login.php";
-    public static final String RIGHT_TECNICO = "ombu.soporte.tecnico";
     public static final String REST_OK = "OK";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
