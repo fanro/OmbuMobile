@@ -24,19 +24,33 @@
                 android:id="@+id/button_nuevoTicket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nuevo Ticket" />
-            <!--android:onClick="nuevoTicket"-->
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:text="Nuevo Ticket"
+                android:onClick="nuevoTicket" />/>
+
+            <Button
+                android:id="@+id/button_sacarFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:text="Tomar Foto" />
 
             <Button
                 android:text="Mis Tickets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:id="@+id/button_misTickets" />
 
             <Button
                 android:id="@+id/button_agenda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:text="Agenda" />
 
         </LinearLayout>

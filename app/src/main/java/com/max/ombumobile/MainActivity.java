@@ -61,11 +61,15 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 JSONObject data = new JSONObject(obj.getString("data"));
                 usr.load(data);
                 if(usr.esTecnico()){
-                    // Menu Tecnico
+                    // El usuario es Tecnico, pregutar como se quiere logear
+
+
+
+
                     Intent intent = new Intent(this, MenuTecnico.class);
                     startActivity(intent);
                 } else {
-                    // Menu Usuario general
+                    // Usuario general
                     Intent intent = new Intent(this, Menu.class);
                     startActivity(intent);
                 }

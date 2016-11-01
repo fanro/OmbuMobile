@@ -3,6 +3,8 @@
     package="com.max.ombumobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuTecnico" />
-        <activity android:name=".Menu"></activity>
+        <activity android:name=".Menu" />
+        <activity android:name=".Inventario"></activity>
     </application>
 
 </manifest>
