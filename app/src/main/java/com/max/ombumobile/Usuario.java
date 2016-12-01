@@ -1,7 +1,5 @@
 package com.max.ombumobile;
 
-import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +20,7 @@ public class Usuario {
     private static Usuario usr = null;
 
     //	Singleton, un unico usuario logeado
-    public static Usuario getInstance(Context context){
+    public static Usuario getInstance(){
         if (usr == null) {
             usr = new Usuario();
         }

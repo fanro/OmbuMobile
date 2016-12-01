@@ -52,7 +52,7 @@ public class Menu extends AppCompatActivity {
 
     // user logeado
     private void showPerfil() {
-        Usuario usr = Usuario.getInstance(getBaseContext());
+        Usuario usr = Usuario.getInstance();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String msj = usr.getPerfil();
         builder.setMessage(msj)
@@ -86,7 +86,7 @@ public class Menu extends AppCompatActivity {
 
     // cierro app, limpio user
     private void cerrarApp() {
-        Usuario usr = Usuario.getInstance(getBaseContext());
+        Usuario usr = Usuario.getInstance();
         usr.logoutUsr();
         super.onBackPressed();
     }

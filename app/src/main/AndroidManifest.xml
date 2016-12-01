@@ -3,8 +3,8 @@
     package="com.max.ombumobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,9 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuTecnico" />
-        <activity android:name=".Menu" />
-        <activity android:name=".Inventario"></activity>
+        <activity
+            android:name=".MenuTecnico"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Menu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventario"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TicketsTecnico"
+            android:label="Tickets Técnico" />
+        <activity android:name=".EditarTicket"></activity>
     </application>
 
 </manifest>

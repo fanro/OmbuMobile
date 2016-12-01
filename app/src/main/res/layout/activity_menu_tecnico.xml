@@ -27,67 +27,14 @@
                 android:id="@+id/button_misTickets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mis Tickets" />
-
-            <Button
-                android:id="@+id/button_nuevoTicket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nuevo Ticket" />
+                android:text="Mis Tickets"
+                android:onClick="ticketsTecnico"/>
 
             <Button
                 android:id="@+id/button_agenda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Agenda" />
-
-            <Button
-                android:id="@+id/button_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/button_8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
 
         </LinearLayout>
     </ScrollView>

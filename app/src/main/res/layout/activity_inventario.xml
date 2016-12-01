@@ -29,7 +29,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/button_LeerCodigo"
-        android:layout_toEndOf="@+id/button_LeerCodigo" />
+        android:layout_toEndOf="@+id/button_LeerCodigo"
+        android:onClick="escribirInventario"/>
 
     <TextView
         android:id="@+id/textView_Inventario"
@@ -66,10 +67,18 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"
         android:layout_below="@+id/textView_Inventario"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="91dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/imagen_Camara" />
+
+    <TextView
+        android:id="@+id/textView_Bien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:layout_above="@+id/button_GenerarTicket"
+        android:layout_below="@+id/imagen_Camara" />
 
 </RelativeLayout>

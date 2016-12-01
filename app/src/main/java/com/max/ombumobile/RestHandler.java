@@ -16,17 +16,17 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by max on 25/10/2016.
- */
-
 public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
-    //public static final String REST_ACTION_LOGIN = "http://10.0.2.2/kiwi/www/webservices/denuncia/login.php";
-    public static final String REST_OK = "OK";
+    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/Inventario.php";
+    public static final String REST_ACTION_TICKETS = "http://www.fiscalias.gob.ar/mjys/denuncia/Tickets_tecnico.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
+
+    public void setProgress(ProgressDialog progress) {
+        this.progress = progress;
+    }
 
     public void setActivity(Activity activity){
         progress = new ProgressDialog(activity);
@@ -64,12 +64,22 @@ public class RestHandler extends AsyncTask<String, Long, String> {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.connect();
 
+            Usuario usr = Usuario.getInstance();
+
             // DEPENDE DE LA URL, LOS PARAMETROS QUE MANDO
             JSONObject jsonParam = new JSONObject();
             switch (args[1]){
                 case REST_ACTION_LOGIN:
                     jsonParam.put("user", args[2]);
                     jsonParam.put("pass", args[3]);
+                    break;
+                case REST_ACTION_INVENTARIO:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("inventario", args[2]);
+                    break;
+                case REST_ACTION_TICKETS:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("tecnico", usr.getUser_id());
                     break;
                 default:
                     break;

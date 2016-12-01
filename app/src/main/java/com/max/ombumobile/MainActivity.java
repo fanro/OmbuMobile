@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     public void processFinish(String output){
-        RestHandler rh;
 
         JSONObject obj = null;
         try {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             Toast toast = Toast.makeText(getBaseContext(), obj.getString("status") + ": " + obj.getString("message"), Toast.LENGTH_SHORT);
             toast.show();
             if(obj.getString("status").equals( "OK")){
-                Usuario usr = Usuario.getInstance(getBaseContext());
+                Usuario usr = Usuario.getInstance();
                 JSONObject data = new JSONObject(obj.getString("data"));
                 usr.load(data);
                 if(usr.esTecnico()){
