@@ -19,8 +19,9 @@ import java.net.URL;
 public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
-    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/Inventario.php";
-    public static final String REST_ACTION_TICKETS = "http://www.fiscalias.gob.ar/mjys/denuncia/Tickets_tecnico.php";
+    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/inventario.php";
+    public static final String REST_ACTION_TICKETS = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsTecnico.php";
+    public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/editarTicket.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
 
@@ -80,6 +81,14 @@ public class RestHandler extends AsyncTask<String, Long, String> {
                 case REST_ACTION_TICKETS:
                     jsonParam.put("session_id", usr.getSession_id());
                     jsonParam.put("tecnico", usr.getUser_id());
+                    break;
+                case REST_ACTION_EDITAR_TICKET:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("ticket", args[2]);
+                    jsonParam.put("estado", args[3]);
+                    jsonParam.put("comentario", args[4]);
+                    jsonParam.put("tecnico", usr.getUser_id());
+                    jsonParam.put("supervisor", args[5]);
                     break;
                 default:
                     break;

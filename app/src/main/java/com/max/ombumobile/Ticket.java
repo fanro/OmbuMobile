@@ -13,6 +13,8 @@ public class Ticket implements Serializable{
     private String bien;
     private String inventario;
     private String prioridad;
+    private String estado;
+    private String supervisor;
     private static final String[] prioridades = {"Muy Alta","Alta", "Normal","Baja", "Muy Baja"};
     private static final String[] estados_tickets = {"EN PROCESO", "EN ESPERA", "CERRADO POR TECNICO", "INTERVENCION OPERADOR", "INTERVENCION SUPERVISOR"};
 
@@ -23,7 +25,8 @@ public class Ticket implements Serializable{
     public static final int MAXValorLongSET = MAXValorLongNumeroSET + MAXValorLongCabeceraSET;
 
     public Ticket(String numero, String cliente, String dependencia, String lugar,
-                  String problema, String comentario, String bien, String inventario,  String estado, String prioridad) {
+                  String problema, String comentario, String bien, String inventario,
+                  String estado, String prioridad, String supervisor) {
         this.numero = numero;
         this.cliente = cliente;
         this.dependencia = dependencia;
@@ -34,12 +37,14 @@ public class Ticket implements Serializable{
         this.inventario = inventario;
         this.prioridad = prioridad;
         this.estado = estado;
+        this.supervisor = supervisor;
     }
 
     @Override
     public String toString() {
 
-        String res = getNumero() + " - " + getPrioridad() + "\n";
+        String res = getNumero("completo") + " - " + estado + "\n";
+        res +=  getPrioridad() + "\n";
         res +=  cliente + "\n";
         res +=  dependencia + "\n";
         res +=  lugar + "\n";
@@ -47,8 +52,11 @@ public class Ticket implements Serializable{
         return res;
     }
 
-    public String getNumero() {
+    public String getNumero(String modo) {
+        if (modo.equals("completo")){
         return armarCadenaTicket(numero);
+        }
+        return numero;
     }
 
     public void setNumero(String numero) {
@@ -119,8 +127,6 @@ public class Ticket implements Serializable{
         this.estado = estado;
     }
 
-    private String estado;
-
     public String getPrioridad() {
         return prioridades[this.indexPrioridades()];
     }
@@ -128,6 +134,15 @@ public class Ticket implements Serializable{
     public void setPrioridad(String prioridad) {
         this.prioridad = prioridad;
     }
+
+    public String getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
+    }
+
 
     private String armarCadenaTicket(String numero){
         char [] res = charFormatoTicket.clone(); // ojo leak

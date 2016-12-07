@@ -95,6 +95,11 @@ public class Menu extends AppCompatActivity {
     public void nuevoTicket(View view) {
         Intent intent = new Intent(this, Inventario.class);
         startActivity(intent);
-        }
+    }
 
+    //  Agenda
+    public void agenda(View view) {
+        Intent intent = new Intent(this, BusquedaContactos.class);
+        startActivity(intent);
+    }
 }

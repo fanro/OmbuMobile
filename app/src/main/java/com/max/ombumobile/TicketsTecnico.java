@@ -32,13 +32,22 @@ public class TicketsTecnico extends AppCompatActivity implements AsyncResponse {
         traerTicketsTecnico();
     }
 
+    @Override
+    public void onRestart() {
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+        //traerTicketsTecnico();
+    }
+
     private void traerTicketsTecnico() {
         RestHandler rh = new RestHandler();
         String[] passing = {"POST", rh.REST_ACTION_TICKETS};
         rh.setActivity(this);
         rh.execute(passing);
     }
-
 
     public void processFinish(String output){
 
@@ -75,7 +84,7 @@ public class TicketsTecnico extends AppCompatActivity implements AsyncResponse {
                         message.setMovementMethod(LinkMovementMethod.getInstance());
 
                         StringBuilder msg = new StringBuilder();
-                        msg.append(ticket.getNumero()+ "\n");
+                        msg.append(ticket.getNumero("completo")+ "\n");
                         msg.append("Problema:\n" + ticket.getProblema()+ "\n\n");
                         msg.append("Comentario:\n" + ticket.getComentario()+ "\n\n");
                         message.setText(msg);
@@ -124,7 +133,8 @@ public class TicketsTecnico extends AppCompatActivity implements AsyncResponse {
                     data.getJSONObject(i).getString("bien"),
                     data.getJSONObject(i).getString("inventario"),
                     data.getJSONObject(i).getString("estado"),
-                    data.getJSONObject(i).getString("prioridad"));
+                    data.getJSONObject(i).getString("prioridad"),
+                    data.getJSONObject(i).getString("supervisor"));
 
             tickets[i] = tic;
         }

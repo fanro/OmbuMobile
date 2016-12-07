@@ -34,7 +34,8 @@
                 android:id="@+id/button_agenda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Agenda" />
+                android:text="Agenda"
+                android:onClick="agenda"/>
 
         </LinearLayout>
     </ScrollView>

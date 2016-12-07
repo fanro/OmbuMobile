@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:text="Agenda" />
+                android:text="Agenda"
+                android:onClick="agenda" />
 
         </LinearLayout>
     </ScrollView>

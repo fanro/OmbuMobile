@@ -31,7 +31,8 @@
         <activity
             android:name=".TicketsTecnico"
             android:label="Tickets Técnico" />
-        <activity android:name=".EditarTicket"></activity>
+        <activity android:name=".EditarTicket" />
+        <activity android:name=".BusquedaContactos"></activity>
     </application>
 
 </manifest>

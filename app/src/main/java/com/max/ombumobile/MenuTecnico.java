@@ -88,10 +88,15 @@ public class MenuTecnico extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //  Nuevo ticket
+    //  Tickets Tecnico
     public void ticketsTecnico(View view) {
         Intent intent = new Intent(this, TicketsTecnico.class);
         startActivity(intent);
     }
 
+    //  Agenda
+    public void agenda(View view) {
+        Intent intent = new Intent(this, BusquedaContactos.class);
+        startActivity(intent);
+    }
 }

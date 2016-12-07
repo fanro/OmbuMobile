@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Ombu Mobile</string>
     <string name="button">Botón</string>
+
+    <string-array name="estados_ticket">
+        <item>EN PROCESO</item>
+        <item>EN ESPERA</item>
+        <item>CERRADO POR TECNICO</item>
+        <item>INTERVENCION OPERADOR</item>
+        <item>INTERVENCION SUPERVISOR</item>
+    </string-array>
+
 </resources>
