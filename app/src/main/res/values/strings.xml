@@ -9,5 +9,6 @@
         <item>INTERVENCION OPERADOR</item>
         <item>INTERVENCION SUPERVISOR</item>
     </string-array>
+    <string name="title_activity_resultado_contactos">ResultadoContactos</string>
 
 </resources>

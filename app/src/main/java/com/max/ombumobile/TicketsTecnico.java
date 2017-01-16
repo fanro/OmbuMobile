@@ -21,7 +21,6 @@ import java.io.Serializable;
 
 public class TicketsTecnico extends AppCompatActivity implements AsyncResponse {
 
-    private Ticket[] ticket;
     private ListView list;
 
     @Override

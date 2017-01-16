@@ -22,6 +22,8 @@ public class RestHandler extends AsyncTask<String, Long, String> {
     public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/inventario.php";
     public static final String REST_ACTION_TICKETS = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsTecnico.php";
     public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/editarTicket.php";
+    public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/mjys/denuncia/getDependencias.php";
+    public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/mjys/denuncia/getContactos.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
 
@@ -90,13 +92,21 @@ public class RestHandler extends AsyncTask<String, Long, String> {
                     jsonParam.put("tecnico", usr.getUser_id());
                     jsonParam.put("supervisor", args[5]);
                     break;
+                case REST_ACTION_GET_DEPEN:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    break;
+                case REST_ACTION_GET_CONT:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("apellido", args[2]);
+                    jsonParam.put("nombre", args[3]);
+                    jsonParam.put("dependencia", args[4]);
+                    break;
                 default:
                     break;
             }
             OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
             out.write(jsonParam.toString());
             out.close();
-
 
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
