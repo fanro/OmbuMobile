@@ -26,7 +26,6 @@ public class BusquedaContactos extends AppCompatActivity {
                             }
                         });
         AlertDialog alert = builder.create();
-        alert.show();
 
     }
 }
