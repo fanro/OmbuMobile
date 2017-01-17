@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -294,5 +295,14 @@ public class Inventario extends AppCompatActivity implements AsyncResponse {
         textView_Inventario.setVisibility(TextView.VISIBLE);
     }
 
+
+    //  Tickets Tecnico
+    public void generarTicket(View view) {
+        String numeroTicket = "123454";
+        BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+
+
+    }
 
 }

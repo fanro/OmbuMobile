@@ -79,6 +79,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:layout_above="@+id/button_GenerarTicket"
-        android:layout_below="@+id/imagen_Camara" />
+        android:layout_below="@+id/imagen_Camara"
+        android:onClick="generarTicket"/>
 
 </RelativeLayout>
