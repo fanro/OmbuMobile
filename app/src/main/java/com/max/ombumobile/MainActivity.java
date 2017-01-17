@@ -1,9 +1,11 @@
 package com.max.ombumobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -59,24 +61,43 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 Usuario usr = Usuario.getInstance();
                 JSONObject data = new JSONObject(obj.getString("data"));
                 usr.load(data);
-                if(usr.esTecnico()){
-                    // El usuario es Tecnico, pregutar como se quiere logear
-
-
-
-
-                    Intent intent = new Intent(this, MenuTecnico.class);
-                    startActivity(intent);
-                } else {
-                    // Usuario general
-                    Intent intent = new Intent(this, Menu.class);
-                    startActivity(intent);
-                }
-                //editText_Pass.setText("");
+                menuPrincipal(usr);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void menuPrincipal(Usuario usr){
+        if(usr.esTecnico()){
+            // El usuario es Tecnico, pregutar como se quiere logear
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Perfil")
+                    //.setCancelable(false)
+                    .setMessage("Como desea usar la aplicación?")
+                    .setPositiveButton("Técnico",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent = new Intent(MainActivity.this, MenuTecnico.class);
+                                    startActivity(intent);
+                                }
+                            })
+                    .setNegativeButton("Usuario",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(MainActivity.this, Menu.class);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            // Usuario general
+            Intent intent = new Intent(this, Menu.class);
+            startActivity(intent);
+        }
+        //editText_Pass.setText("");
 
     }
 }

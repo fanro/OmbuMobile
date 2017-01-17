@@ -3,8 +3,8 @@ package com.max.ombumobile;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -94,6 +94,24 @@ public class Menu extends AppCompatActivity {
     //  Nuevo ticket
     public void nuevoTicket(View view) {
         Intent intent = new Intent(this, Inventario.class);
+        startActivity(intent);
+    }
+
+    //  tickets activos
+    public void ticketsActivos(View view) {
+        Intent intent = new Intent(this, TicketsUsuario.class);
+        Bundle datos = new Bundle();
+        datos.putString("modo","activos");
+        intent.putExtras(datos);
+        startActivity(intent);
+    }
+
+    //  tickets historicos
+    public void ticketsFinalizados(View view) {
+        Intent intent = new Intent(this, TicketsUsuario.class);
+        Bundle datos = new Bundle();
+        datos.putString("modo","finalizados");
+        intent.putExtras(datos);
         startActivity(intent);
     }
 

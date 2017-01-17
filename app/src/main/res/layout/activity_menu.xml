@@ -30,12 +30,23 @@
                 android:onClick="nuevoTicket" />
 
             <Button
-                android:text="Mis Tickets"
+                android:text="Mis Tickets Activos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
-                android:id="@+id/button_misTickets" />
+                android:id="@+id/button_misTicketsActivos"
+                android:onClick="ticketsActivos" />
+
+            <Button
+                android:text="Mis Tickets Finalizados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/button_misTicketsHistoricos"
+                android:onClick="ticketsFinalizados" />
+
 
             <Button
                 android:id="@+id/button_agenda"

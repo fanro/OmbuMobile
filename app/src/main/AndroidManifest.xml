@@ -33,7 +33,8 @@
             android:label="Tickets Técnico" />
         <activity android:name=".EditarTicket" />
         <activity android:name=".BusquedaContactos" />
-        <activity android:name=".ResultadoContactos"></activity>
+        <activity android:name=".ResultadoContactos" />
+        <activity android:name=".TicketsUsuario"></activity>
     </application>
 
 </manifest>

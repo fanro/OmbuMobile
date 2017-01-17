@@ -1,5 +1,8 @@
 package com.max.ombumobile;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class Contacto {
 
     private String apellido;
@@ -93,6 +96,26 @@ public class Contacto {
         this.dependencia = dependencia;
     }
 
+    public static Contacto[] parsearContactos(JSONArray data){
+
+        Contacto[] contactos;
+        contactos = new Contacto[data.length()];
+        try {
+            for (int i = 0; i < data.length(); i++) {
+                Contacto con = new Contacto(data.getJSONObject(i).getString("apellido"),
+                        data.getJSONObject(i).getString("nombre"),
+                        data.getJSONObject(i).getString("email"),
+                        data.getJSONObject(i).getString("telefono_lab"),
+                        data.getJSONObject(i).getString("celular_lab"),
+                        data.getJSONObject(i).getString("dependencia"));
+
+                contactos[i] = con;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return contactos;
+    }
 
 }
 

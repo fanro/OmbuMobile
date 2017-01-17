@@ -1,10 +1,14 @@
 package com.max.ombumobile;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.Serializable;
 
 public class Ticket implements Serializable{
 
     private String numero;
+    private String tstamp;
     private String cliente;
     private String dependencia;
     private String lugar;
@@ -24,10 +28,11 @@ public class Ticket implements Serializable{
     public static final int MAXValorLongCabeceraSET = 3;
     public static final int MAXValorLongSET = MAXValorLongNumeroSET + MAXValorLongCabeceraSET;
 
-    public Ticket(String numero, String cliente, String dependencia, String lugar,
+    public Ticket(String numero, String tstamp, String cliente, String dependencia, String lugar,
                   String problema, String comentario, String bien, String inventario,
                   String estado, String prioridad, String supervisor) {
         this.numero = numero;
+        this.tstamp = tstamp;
         this.cliente = cliente;
         this.dependencia = dependencia;
         this.lugar = lugar;
@@ -69,6 +74,14 @@ public class Ticket implements Serializable{
 
     public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public String getTstamp() {
+        return tstamp;
+    }
+
+    public void setTstamp(String tstamp) {
+        this.tstamp = tstamp;
     }
 
     public String getDependencia() {
@@ -165,5 +178,32 @@ public class Ticket implements Serializable{
             case "5": return 4;
         }
         return 1;
+    }
+
+    public static Ticket[] parsearTickets(JSONArray data){
+
+        Ticket[] tickets;
+        tickets = new Ticket[data.length()];
+        try {
+            for (int i = 0; i < data.length(); i++) {
+                Ticket tic = new Ticket(data.getJSONObject(i).getString("ticket"),
+                        data.getJSONObject(i).getString("tstamp"),
+                        data.getJSONObject(i).getString("cliente"),
+                        data.getJSONObject(i).getString("dependencia"),
+                        data.getJSONObject(i).getString("lugar"),
+                        data.getJSONObject(i).getString("problema"),
+                        data.getJSONObject(i).getString("comentario"),
+                        data.getJSONObject(i).getString("bien"),
+                        data.getJSONObject(i).getString("inventario"),
+                        data.getJSONObject(i).getString("estado"),
+                        data.getJSONObject(i).getString("prioridad"),
+                        data.getJSONObject(i).getString("supervisor"));
+
+                tickets[i] = tic;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tickets;
     }
 }

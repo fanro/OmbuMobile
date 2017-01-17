@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class ResultadoContactos extends AppCompatActivity implements AsyncRespon
     public void processFinish(String output) {
 
         JSONObject obj = null;
+        String message = "";
         try {
             obj = new JSONObject(output);
             Log.d(getString(R.string.app_name), obj.toString());
@@ -49,103 +51,94 @@ public class ResultadoContactos extends AppCompatActivity implements AsyncRespon
 
         try {
             if(obj.getString("status").equals( "OK")){
+                // guardo msj para mostrar, si no encuentra los campos
+                // del json, tira exception
+                message = obj.getString("message");
                 JSONObject data = new JSONObject(obj.getString("data"));
                 JSONArray contactosArray = new JSONArray(data.getString("contactos"));
-                Contacto[] contactos = parsearContactos(contactosArray);
-                final ArrayAdapter<Contacto> adapter = new ArrayAdapter<Contacto>(this, R.layout.list_item_contactos, contactos);
-                list = (ListView) findViewById(R.id.list);
-                list.setAdapter(adapter);
-
-                list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Contacto con = adapter.getItem(position);
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(ResultadoContactos.this);
-
-                        final TextView message = new TextView(ResultadoContactos.this);
-                        message.setTextSize(22);
-                        message.setLinksClickable(true);
-                        message.setSelected(true);
-                        message.setMovementMethod(LinkMovementMethod.getInstance());
-
-                        StringBuilder msg = new StringBuilder();
-                        msg.append(con.getApellido()+ " " + con.getNombre());
-                        msg.append("\n" + con.getEmail());
-                        if(con.getTelefono_lab()!=""){
-                            msg.append("\n" + con.getTelefono_lab());
-                        }
-                        if(con.getCelular_lab()!=""){
-                            msg.append("\n" + con.getCelular_lab());
-                        }
-                        msg.append("\n" + con.getDependencia());
-
-                        //Pattern patron = Pattern.compile("/^[0-9]{8,10}$/");  //15XXXXXXXX 5XXXXXXX
-
-                        final SpannableString string = new SpannableString(msg);
-                        Linkify.addLinks(string, Linkify.EMAIL_ADDRESSES);
-
-                        //armo links telefonos a manopla, LINKIFY tiene problemas con numeros
-                        //argentinos, otra posible solucion es armar la expresion regular de los telefonos
-                        if(con.getTelefono_lab()!=""){
-                            int inicio = con.getApellido().length() + 1 + con.getNombre().length()+ 1 + con.getEmail().length() + 1;
-                            int fin = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length() + 1 + con.getTelefono_lab().length();
-                            URLSpan span = new URLSpan("tel:" + con.getTelefono_lab());
-                            string.setSpan(span,inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        }
-
-                        if(con.getTelefono_lab()!="" && con.getCelular_lab()!=""){
-                            int inicio = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length()
-                                    + 1 + con.getTelefono_lab().length() + 1;
-                            int fin = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length()
-                                    + 1 + con.getTelefono_lab().length() + 1 + con.getCelular_lab().length();
-                            URLSpan span = new URLSpan("tel:" + con.getCelular_lab());
-                            string.setSpan(span,inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        }
-
-                        message.setText(string);
-
-                        builder.setTitle("")
-                                .setView(message)
-                                .setCancelable(false)
-                                .setNeutralButton("ACEPTAR",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                    }
-
-                });
-
+                Contacto[] contactos = Contacto.parsearContactos(contactosArray);
+                renderContactos(contactos);
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast toast = Toast.makeText(getBaseContext(), message , Toast.LENGTH_SHORT);
+            toast.show();
+            //vuelvo
+            super.onBackPressed();
         }
-
     }
 
-    private Contacto[] parsearContactos(JSONArray data){
+    private void renderContactos(Contacto[] contactos){
 
-        Contacto[] contactos;
-        contactos = new Contacto[data.length()];
-        try {
-            for (int i = 0; i < data.length(); i++) {
-                Contacto con = new Contacto(data.getJSONObject(i).getString("apellido"),
-                        data.getJSONObject(i).getString("nombre"),
-                        data.getJSONObject(i).getString("email"),
-                        data.getJSONObject(i).getString("telefono_lab"),
-                        data.getJSONObject(i).getString("celular_lab"),
-                        data.getJSONObject(i).getString("dependencia"));
+        final ArrayAdapter<Contacto> adapter = new ArrayAdapter<Contacto>(this, R.layout.list_item_contactos, contactos);
+        list = (ListView) findViewById(R.id.list);
+        list.setAdapter(adapter);
 
-                contactos[i] = con;
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Contacto con = adapter.getItem(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ResultadoContactos.this);
+
+                final TextView message = new TextView(ResultadoContactos.this);
+                message.setTextSize(22);
+                message.setLinksClickable(true);
+                message.setSelected(true);
+                message.setMovementMethod(LinkMovementMethod.getInstance());
+
+                StringBuilder msg = new StringBuilder();
+                msg.append(con.getApellido()+ " " + con.getNombre());
+                msg.append("\n" + con.getEmail());
+                if(con.getTelefono_lab()!=""){
+                    msg.append("\n" + con.getTelefono_lab());
+                }
+                if(con.getCelular_lab()!=""){
+                    msg.append("\n" + con.getCelular_lab());
+                }
+                msg.append("\n" + con.getDependencia());
+
+                //Pattern patron = Pattern.compile("/^[0-9]{8,10}$/");  //15XXXXXXXX 5XXXXXXX
+
+                final SpannableString string = new SpannableString(msg);
+                Linkify.addLinks(string, Linkify.EMAIL_ADDRESSES);
+
+                //armo links telefonos a manopla, LINKIFY tiene problemas con numeros
+                //argentinos, otra posible solucion es armar la expresion regular de los telefonos
+                if(con.getTelefono_lab()!=""){
+                    int inicio = con.getApellido().length() + 1 + con.getNombre().length()+ 1 + con.getEmail().length() + 1;
+                    int fin = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length() + 1 + con.getTelefono_lab().length();
+                    URLSpan span = new URLSpan("tel:" + con.getTelefono_lab());
+                    string.setSpan(span,inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+                if(con.getTelefono_lab()!="" && con.getCelular_lab()!=""){
+                    int inicio = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length()
+                            + 1 + con.getTelefono_lab().length() + 1;
+                    int fin = con.getApellido().length() + 1 + con.getNombre().length() + 1 + con.getEmail().length()
+                            + 1 + con.getTelefono_lab().length() + 1 + con.getCelular_lab().length();
+                    URLSpan span = new URLSpan("tel:" + con.getCelular_lab());
+                    string.setSpan(span,inicio, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+
+                message.setText(string);
+
+                builder.setTitle("")
+                        .setView(message)
+                        .setCancelable(false)
+                        .setNeutralButton("ACEPTAR",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return contactos;
+
+        });
+
     }
+
 }

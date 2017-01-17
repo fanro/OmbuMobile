@@ -20,7 +20,8 @@ public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
     public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/inventario.php";
-    public static final String REST_ACTION_TICKETS = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsTecnico.php";
+    public static final String REST_ACTION_GET_TICKETS_TEC = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsTecnico.php";
+    public static final String REST_ACTION_GET_TICKETS_USR = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsUsuario.php";
     public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/editarTicket.php";
     public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/mjys/denuncia/getDependencias.php";
     public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/mjys/denuncia/getContactos.php";
@@ -80,9 +81,14 @@ public class RestHandler extends AsyncTask<String, Long, String> {
                     jsonParam.put("session_id", usr.getSession_id());
                     jsonParam.put("inventario", args[2]);
                     break;
-                case REST_ACTION_TICKETS:
+                case REST_ACTION_GET_TICKETS_TEC:
                     jsonParam.put("session_id", usr.getSession_id());
                     jsonParam.put("tecnico", usr.getUser_id());
+                    break;
+                case REST_ACTION_GET_TICKETS_USR:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("usuario", usr.getUser_id());
+                    jsonParam.put("modo", args[2]);
                     break;
                 case REST_ACTION_EDITAR_TICKET:
                     jsonParam.put("session_id", usr.getSession_id());
