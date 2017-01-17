@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -23,9 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class Inventario extends AppCompatActivity implements AsyncResponse {
@@ -302,6 +310,26 @@ public class Inventario extends AppCompatActivity implements AsyncResponse {
         BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bitmapdataArray = baos.toByteArray();
+
+        // TODO: cambiar Bleh
+        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child("Bleh");
+        UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // TODO: ver que hacer aca
+                                            }
+                                        }
+        ).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // TODO: ver que hacer acá
+
+            }
+        });
 
     }
 
