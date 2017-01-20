@@ -34,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Inventario extends AppCompatActivity implements AsyncResponse {
@@ -306,7 +308,10 @@ public class Inventario extends AppCompatActivity implements AsyncResponse {
 
     //  Tickets Tecnico
     public void generarTicket(View view) {
+        // TODO: Hacer generación del ticket (mhruiz)
         String numeroTicket = "123454";
+
+
         BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
@@ -315,18 +320,19 @@ public class Inventario extends AppCompatActivity implements AsyncResponse {
         byte[] bitmapdataArray = baos.toByteArray();
 
         // TODO: cambiar Bleh
-        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child("Bleh");
+        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // TODO: ver que hacer acá
-
+                Log.e("Inventario","LA SUBI");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 // TODO: ver que hacer aca
+                Log.e("Inventario", e.getMessage());
             }
         });
 
