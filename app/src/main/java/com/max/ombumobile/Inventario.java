@@ -317,17 +317,16 @@ public class Inventario extends AppCompatActivity implements AsyncResponse {
         // TODO: cambiar Bleh
         StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child("Bleh");
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // TODO: ver que hacer aca
-                                            }
-                                        }
-        ).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // TODO: ver que hacer acá
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // TODO: ver que hacer aca
             }
         });
 
