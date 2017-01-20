@@ -11,73 +11,102 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.max.ombumobile.Inventario">
 
-    <Button
-        android:id="@+id/button_LeerCodigo"
-        android:layout_width="wrap_content"
+    <ScrollView
         android:layout_height="wrap_content"
-        android:text="Leer Codigo de Barras"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/scrollView"
+        android:layout_width="350dp">
 
-    <Button
-        android:id="@+id/button_EscribirCodigo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Escribir Codigo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/button_LeerCodigo"
-        android:layout_toEndOf="@+id/button_LeerCodigo"
-        android:onClick="escribirInventario"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView_Inventario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="INVXXXXXXXX"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="26dp"
-        android:layout_below="@+id/button_LeerCodigo"
-        android:layout_centerHorizontal="true" />
+            <Button
+                android:id="@+id/button_LeerCodigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leer Codigo de Barras"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-    <Button
-        android:id="@+id/button_AdjuntarFoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Adjuntar Foto"
-        android:layout_above="@+id/button_GenerarTicket"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+            <Button
+                android:id="@+id/button_EscribirCodigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Escribir Codigo"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/button_LeerCodigo"
+                android:layout_toEndOf="@+id/button_LeerCodigo"
+                android:onClick="escribirInventario"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_Inventario"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/imagen_Camara" />
+            <Button
+                android:id="@+id/button_Incidente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incidente"
+                android:layout_above="@+id/button_AdjuntarFoto"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:id="@+id/textView_Bien"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:layout_above="@+id/button_GenerarTicket"
-        android:layout_below="@+id/imagen_Camara" />
+            <Button
+                android:id="@+id/button_AdjuntarFoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adjuntar Foto"
+                android:layout_above="@+id/button_GenerarTicket"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-    <Button
-        android:id="@+id/button_GenerarTicket"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Generar Ticket"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="generarTicket"/>
+            <Button
+                android:id="@+id/button_GenerarTicket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Generar Ticket"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:onClick="generarTicket"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/textView_Inventario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="INVXXXXXXXX"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginTop="26dp"
+                android:layout_below="@+id/button_LeerCodigo"
+                android:layout_centerHorizontal="true"
+                 />
+
+            <TextView
+                android:id="@+id/textView_Bien"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:layout_above="@+id/button_GenerarTicket"
+                android:layout_below="@+id/imagen_Camara"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_Inventario"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:id="@+id/imagen_Camara" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

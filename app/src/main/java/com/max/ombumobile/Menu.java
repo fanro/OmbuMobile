@@ -93,7 +93,7 @@ public class Menu extends AppCompatActivity {
 
     //  Nuevo ticket
     public void nuevoTicket(View view) {
-        Intent intent = new Intent(this, Inventario.class);
+        Intent intent = new Intent(this, GeneracionTicketPaso1.class);
         startActivity(intent);
     }
 
