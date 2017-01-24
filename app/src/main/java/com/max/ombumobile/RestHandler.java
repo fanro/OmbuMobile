@@ -25,6 +25,7 @@ public class RestHandler extends AsyncTask<String, Long, String> {
     public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/editarTicket.php";
     public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/mjys/denuncia/getDependencias.php";
     public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/mjys/denuncia/getContactos.php";
+    public static final String REST_ACTION_GET_INC = "http://www.fiscalias.gob.ar/mjys/denuncia/incidente.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
 
@@ -106,6 +107,13 @@ public class RestHandler extends AsyncTask<String, Long, String> {
                     jsonParam.put("apellido", args[2]);
                     jsonParam.put("nombre", args[3]);
                     jsonParam.put("dependencia", args[4]);
+                    break;
+                case REST_ACTION_GET_INC:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("inventario", "");
+                    jsonParam.put("area",args[2]);
+                    jsonParam.put("seccion", args[3]);
+                    jsonParam.put("problema", args[4]);
                     break;
                 default:
                     break;

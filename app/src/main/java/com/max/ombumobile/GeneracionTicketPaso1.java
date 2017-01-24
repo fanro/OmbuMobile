@@ -51,6 +51,10 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generacion_ticket_paso1);
 
+        inicializarVista();
+    }
+
+    private void inicializarVista() {
         activity = this;
         button_EscribirCodigo = (Button)findViewById(R.id.button_EscribirCodigo);
         button_LeerCodigo = (Button)findViewById(R.id.button_LeerCodigo);
@@ -241,6 +245,7 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
                 Bien bien = new Bien(data.getString("codigo"), data.getString("dependencia"),
                         data.getString("descripcion"),data.getString("atributo"), data.getString("serie"));
                 llenarCamposConBien(bien);
+                button_Siguiente.setEnabled(true);
             } else{
                 mostrarToastMensaje("Inventario Incorrecto");
             }
