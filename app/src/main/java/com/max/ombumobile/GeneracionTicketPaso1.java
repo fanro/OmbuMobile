@@ -25,6 +25,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.max.ombumobile.Inventario.MAXValorLongINV;
@@ -35,6 +36,7 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
 
     private static final String BS_PACKAGE = "com.google.zxing.client.android";
     public static final int REQUEST_CODE_BARCODE = 0x0000c0de;
+    public static final int REQUEST_CODE_PASO_2 = 10056;
     private Button button_LeerCodigo;
     private Button button_EscribirCodigo;
     private Button button_Siguiente;
@@ -45,6 +47,7 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
     private String numero_inventario;
     private TextView textView_Inventario;
     private TextView textView_Bien;
+    private Bien bien;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
         button_EscribirCodigo.setEnabled(false);
         button_LeerCodigo.setEnabled(false);
         button_Siguiente.setEnabled(false);
+        numero_inventario = "";
         this.ocultarCampos();
 
 
@@ -242,9 +246,9 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
         try {
             if(obj.getString("status").equals( "OK")){
                 JSONObject data = new JSONObject(obj.getString("data"));
-                Bien bien = new Bien(data.getString("codigo"), data.getString("dependencia"),
+                bien = new Bien(data.getString("codigo"), data.getString("dependencia"),
                         data.getString("descripcion"),data.getString("atributo"), data.getString("serie"));
-                llenarCamposConBien(bien);
+                llenarCamposConBien();
                 button_Siguiente.setEnabled(true);
             } else{
                 mostrarToastMensaje("Inventario Incorrecto");
@@ -260,7 +264,7 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
         Toast.makeText(this, inv, Toast.LENGTH_LONG).show();
     }
 
-    private void llenarCamposConBien(Bien bien) {
+    private void llenarCamposConBien() {
         mostrarCampos();
         textView_Inventario.setText(armarCadenaInventario(bien.getCodigo()));
         textView_Bien.setText(
@@ -306,6 +310,15 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
 
             }
         }
+
+        if (requestCode == REQUEST_CODE_PASO_2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast toast = Toast.makeText(getBaseContext(), "Ticket " + data.getData().toString() + " fue creado correctamente" , Toast.LENGTH_LONG);
+                toast.show();
+                //---close the activity---
+                finish();
+            }
+        }
     }
 
     private boolean verificarResultadoScan(String res) {
@@ -315,7 +328,20 @@ public class GeneracionTicketPaso1 extends AppCompatActivity implements AsyncRes
     }
 
     public void siguientePaso(View view){
+        NuevoTicket ticket = new NuevoTicket();
         Intent intent = new Intent(GeneracionTicketPaso1.this, GeneracionTicketPaso2.class);
-        startActivity(intent);
+
+        if(this.numero_inventario.equals("")){
+            ticket.setInventariado("NO INVENTARIADO");
+            ticket.setBienDescripcion("");
+            ticket.setNroInventario("");
+        } else {
+            ticket.setInventariado("INVENTARIADO");
+            ticket.setBienDescripcion(bien.getDescripcion() + " " + bien.getAtributo());
+            ticket.setNroInventario(bien.getCodigo());
+        }
+
+        intent.putExtra("NuevoTicket", (Serializable) ticket);
+        startActivityForResult(intent, REQUEST_CODE_PASO_2);
     }
 }

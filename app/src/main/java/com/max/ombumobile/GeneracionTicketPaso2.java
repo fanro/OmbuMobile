@@ -1,6 +1,8 @@
 package com.max.ombumobile;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +33,20 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
     private static final String AREA = "**Área**";
     private static final String SECCION = "**Sección**";
     private static final String PROBLEMA = "**Problema**";
+    private static final int MAX_CANT_PROBLEMAS = 100; // maxima cantidad de problemas que puede tener una seccion
+                                                        // TODO: ver de hacerlo dinamico
+    public static final int REQUEST_CODE_PASO_3 = 10057;
+    private NuevoTicket ticket;
+    private String [] codigo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generacion_ticket_paso2);
+
+        Intent intent = getIntent();
+        ticket = (NuevoTicket) intent.getSerializableExtra("NuevoTicket");
+        codigo = new String[MAX_CANT_PROBLEMAS];
 
         spinner_Area = (Spinner)findViewById(R.id.spinner_Area);
         spinner_Seccion = (Spinner)findViewById(R.id.spinner_Seccion);
@@ -179,12 +191,13 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
     }
 
 
-    public static String[] parsearIncidentes(JSONArray data){
+    public String[] parsearIncidentes(JSONArray data){
         String[] incidentes;
         incidentes = new String[data.length()];
         try {
             for (int i = 0; i < data.length(); i++) {
                 incidentes[i] = data.getJSONObject(i).getString("descripcion");
+                codigo[i] = data.getJSONObject(i).getString("codigo");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -196,7 +209,11 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
 
         if(verificarDatos()){
             Intent intent = new Intent(GeneracionTicketPaso2.this, GeneracionTicketPaso3.class);
-            startActivity(intent);
+            int pos = spinner_Problema.getSelectedItemPosition();
+            // codigo corrido con respecto al spinner
+            ticket.setIncidente(codigo[pos-1]);
+            intent.putExtra("NuevoTicket", (Serializable) ticket);
+            startActivityForResult(intent, REQUEST_CODE_PASO_3);
         }
         else {
             Toast toast = Toast.makeText(getBaseContext(), "Seleccione un problema válido", Toast.LENGTH_SHORT);
@@ -209,6 +226,21 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
             return false;
         }
             return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CODE_PASO_3) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent data2 = new Intent();
+                String text = data.getData().toString();
+                //---set the data to pass back---
+                data2.setData(Uri.parse(text));
+                setResult(RESULT_OK, data2);
+                //---close the activity---
+                finish();
+            }
+        }
     }
 
 }
