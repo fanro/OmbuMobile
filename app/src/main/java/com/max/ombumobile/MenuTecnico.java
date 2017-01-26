@@ -84,6 +84,8 @@ public class MenuTecnico extends AppCompatActivity {
     // cierro app, limpio user
     private void cerrarApp() {
         Usuario usr = Usuario.getInstance();
+        SqliteHandler db = new SqliteHandler(this);
+        db.deleteSession(usr.getSession_id());
         usr.logoutUsr();
         super.onBackPressed();
     }

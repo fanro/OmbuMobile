@@ -13,6 +13,7 @@ public class Usuario {
 
     public static final String RIGHT_TECNICO = "ombu.soporte.tecnico";
     private String user_id;
+    private String user;
     private String nombre;
     private String session_id;
     private String[] grupos;
@@ -87,5 +88,13 @@ public class Usuario {
         return "Usuario: " + this.nombre + "\n" +
                 "Legajo: " + this.user_id  + "\n" +
                 "Session: ********************" + this.session_id.substring(19,25) ;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
