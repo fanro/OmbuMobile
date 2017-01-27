@@ -137,13 +137,13 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // TODO: ver que hacer acá
-                Log.e("Inventario","LA SUBI");
+                Log.e(getString(R.string.app_name),"LA SUBI");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 // TODO: ver que hacer aca
-                Log.e("Inventario", e.getMessage());
+                Log.e(getString(R.string.app_name), e.getMessage());
             }
         });
     }

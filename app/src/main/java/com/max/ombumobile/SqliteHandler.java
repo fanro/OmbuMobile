@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SqliteHandler extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "OmbuMobile.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     public static final String SESSION_TABLE_NAME = "sessions";
     public static final String SESSION_COLUMN_USER = "user";
     public static final String SESSION_COLUMN_USER_ID = "user_id";

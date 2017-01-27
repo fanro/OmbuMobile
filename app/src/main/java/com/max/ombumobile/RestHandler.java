@@ -19,14 +19,14 @@ import java.net.URL;
 public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
-    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/mjys/denuncia/inventario.php";
-    public static final String REST_ACTION_GET_TICKETS_TEC = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsTecnico.php";
-    public static final String REST_ACTION_GET_TICKETS_USR = "http://www.fiscalias.gob.ar/mjys/denuncia/ticketsUsuario.php";
-    public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/editarTicket.php";
-    public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/mjys/denuncia/getDependencias.php";
-    public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/mjys/denuncia/getContactos.php";
-    public static final String REST_ACTION_GET_INC = "http://www.fiscalias.gob.ar/mjys/denuncia/incidente.php";
-    public static final String REST_ACTION_NUEVO_TICKET = "http://www.fiscalias.gob.ar/mjys/denuncia/crearTicket.php";
+    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/dpam/tickets/inventario.php";
+    public static final String REST_ACTION_GET_TICKETS_TEC = "http://www.fiscalias.gob.ar/dpam/tickets/ticketsTecnico.php";
+    public static final String REST_ACTION_GET_TICKETS_USR = "http://www.fiscalias.gob.ar/dpam/tickets/ticketsUsuario.php";
+    public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/dpam/tickets/editarTicket.php";
+    public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/dpam/tickets/getDependencias.php";
+    public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/dpam/tickets/getContactos.php";
+    public static final String REST_ACTION_GET_INC = "http://www.fiscalias.gob.ar/dpam/tickets/incidente.php";
+    public static final String REST_ACTION_NUEVO_TICKET = "http://www.fiscalias.gob.ar/dpam/tickets/crearTicket.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
 
