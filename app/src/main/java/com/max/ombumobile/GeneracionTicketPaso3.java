@@ -122,17 +122,15 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     }
 
     private void subirFoto(String nroTicket){
-        // TODO: Hacer generación del ticket (mhruiz)
         String numeroTicket = nroTicket;
 
         BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bitmapdataArray = baos.toByteArray();
 
-        // TODO: cambiar Bleh
         StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
