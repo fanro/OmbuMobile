@@ -69,9 +69,22 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         imagen_Ticket.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.parse(uri.getPath()),"image/png");
-                startActivity(i);
+                String ticketNro = ticket.getNumero("completo");
+                StorageReference ticketImgRef = FirebaseStorage.getInstance().getReference().child(ticketNro).child(ticketNro + Utils.md5(ticketNro) + ".png");
+                ticketImgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+                        i.setDataAndType(uri, "image/png");
+                        startActivity(i);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e("ERR_DOWNLOAD_IMG", "Error descargando la imagen del ticket");
+                    }
+                });
+
             }
 
         });
@@ -157,7 +170,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.PNG, 0, bytes);
+        inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
