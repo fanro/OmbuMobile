@@ -1,10 +1,12 @@
 package com.max.ombumobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,8 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     private EditText editText_ComenTecnico;
     private Ticket ticket;
     private ImageView imagen_Ticket;
+    private Bitmap bitmap;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,15 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
 
         this.setValores(ticket);
 
+        imagen_Ticket.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+                i.setDataAndType(Uri.parse(uri.getPath()),"image/png");
+                startActivity(i);
+            }
+
+        });
     }
 
     private void setValores(Ticket ticket) {
@@ -79,8 +93,9 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         ticketImgRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imagen_Ticket.setImageBitmap(bmp);
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imagen_Ticket.setImageBitmap(bitmap);
+                uri = getImageUri(EditarTicket.this, bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -138,6 +153,13 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
             e.printStackTrace();
         }
 
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.PNG, 0, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
 }
