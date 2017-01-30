@@ -1,6 +1,8 @@
 package com.max.ombumobile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +20,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,10 +75,12 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         final String ticketNro = ticket.getNumero("completo");
 
         StorageReference ticketImgRef = FirebaseStorage.getInstance().getReference().child(ticketNro).child(ticketNro + Utils.md5(ticketNro) + ".png");
-        ticketImgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+        ticketImgRef.getBytes(1024 * 1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-            public void onSuccess(Uri uri) {
-                imagen_Ticket.setImageURI(uri);
+            public void onSuccess(byte[] bytes) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imagen_Ticket.setImageBitmap(bmp);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
