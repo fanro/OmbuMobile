@@ -1,7 +1,9 @@
 package com.max.ombumobile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +70,21 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         textView_Direccion.setText("Dirección: " + ticket.getLugar());
         textView_Incidente.setText("Incidente: " + ticket.getProblema());
         textView_Comentario.setText("Comentario: " + ticket.getComentario());
+
+        final String ticketNro = ticket.getNumero("completo");
+
+        StorageReference ticketImgRef = FirebaseStorage.getInstance().getReference().child(ticketNro).child(ticketNro + Utils.md5(ticketNro) + ".png");
+        ticketImgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                imagen_Ticket.setImageURI(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("ERR_DOWNLOAD_IMG", "Error descargando la imagen del ticket " + ticketNro);
+            }
+        });
 
         spinner_estados = (Spinner) findViewById(R.id.spinner_estados);
         List<String> list = new ArrayList<String>();

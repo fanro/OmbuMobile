@@ -27,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,7 +133,7 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bitmapdataArray = baos.toByteArray();
 
-        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
+        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + Utils.md5(numeroTicket) + ".png");
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
