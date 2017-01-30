@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     private Spinner spinner_estados;
     private EditText editText_ComenTecnico;
     private Ticket ticket;
+    private ImageView imagen_Ticket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         textView_Incidente = (TextView) findViewById(R.id.textView_Incidente);
         textView_Comentario = (TextView) findViewById(R.id.textView_Comentario);
         editText_ComenTecnico = (EditText) findViewById(R.id.editText_ComenTecnico);
+        imagen_Ticket = (ImageView) findViewById(R.id.imagen_Ticket);
         editText_ComenTecnico.setSelected(false);
 
         this.setValores(ticket);

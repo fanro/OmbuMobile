@@ -102,7 +102,7 @@ public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
                                 dialog.cancel();
                             }
                         });
-                builder.setPositiveButton("Editar Ticket",
+                builder.setPositiveButton("Ver ticket",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //editarTicket(ticket);
