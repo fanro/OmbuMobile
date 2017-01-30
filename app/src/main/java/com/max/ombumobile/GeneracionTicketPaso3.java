@@ -3,11 +3,10 @@ package com.max.ombumobile;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,8 +22,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -96,8 +93,8 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri();
-                cameraIntent.putExtra( MediaStore.EXTRA_OUTPUT, fileUri );
+                //fileUri = getOutputMediaFileUri();
+                //cameraIntent.putExtra( MediaStore.EXTRA_OUTPUT, fileUri );
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
@@ -105,12 +102,12 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            //Bitmap photo = (Bitmap) data.getExtras().get("data");
-            //imagen_Camara.setImageBitmap(photo);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imagen_Camara.setImageBitmap(photo);
             //imagen_Camara.setImageURI(fileUri);
-            Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
-            Bitmap bt=Bitmap.createScaledBitmap(bitmap, 300, 300, false);
-            imagen_Camara.setImageBitmap(bt);
+            //Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
+            //Bitmap bt=Bitmap.createScaledBitmap(bitmap, 300, 300, false);
+            //imagen_Camara.setImageBitmap(bt);
         }
     }
 
@@ -138,15 +135,16 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     private void subirFoto(String nroTicket){
         String numeroTicket = nroTicket;
 
-        //BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
-        //Bitmap bitmap = drawable.getBitmap();
-        Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
+        BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        //Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bitmapdataArray = baos.toByteArray();
 
-        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
+        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + Utils.md5(numeroTicket) + ".png"
+        );
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -161,7 +159,7 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
                 Log.e(getString(R.string.app_name), e.getMessage());
             }
         });
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+       /* uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
@@ -174,7 +172,7 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
                 System.out.println("Upload is paused");
             }
-        });
+        });*/
     }
 
     private boolean verificarDatos() {
