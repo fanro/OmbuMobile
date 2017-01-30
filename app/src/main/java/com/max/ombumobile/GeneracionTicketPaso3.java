@@ -3,9 +3,11 @@ package com.max.ombumobile;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,12 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -27,8 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +53,8 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     private ImageView imagen_Camara;
     private EditText editText_ComentarioTicket;
     private NuevoTicket ticket;
+    private Uri fileUri;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,8 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                fileUri = getOutputMediaFileUri();
+                cameraIntent.putExtra( MediaStore.EXTRA_OUTPUT, fileUri );
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
@@ -97,8 +105,12 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imagen_Camara.setImageBitmap(photo);
+            //Bitmap photo = (Bitmap) data.getExtras().get("data");
+            //imagen_Camara.setImageBitmap(photo);
+            //imagen_Camara.setImageURI(fileUri);
+            Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
+            Bitmap bt=Bitmap.createScaledBitmap(bitmap, 300, 300, false);
+            imagen_Camara.setImageBitmap(bt);
         }
     }
 
@@ -126,14 +138,15 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     private void subirFoto(String nroTicket){
         String numeroTicket = nroTicket;
 
-        BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
+        //BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
+        //Bitmap bitmap = drawable.getBitmap();
+        Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bitmapdataArray = baos.toByteArray();
 
-        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + Utils.md5(numeroTicket) + ".png");
+        StorageReference fStorage = FirebaseStorage.getInstance().getReference().child(numeroTicket).child(numeroTicket + (new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()));
         UploadTask uploadTask = fStorage.putBytes(bitmapdataArray);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -146,6 +159,20 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             public void onFailure(@NonNull Exception e) {
                 // TODO: ver que hacer aca
                 Log.e(getString(R.string.app_name), e.getMessage());
+            }
+        });
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                System.out.println("Upload is " + progress + "% done");
+                int currentprogress = (int) progress;
+                progressBar.setProgress(currentprogress);
+            }
+        }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                System.out.println("Upload is paused");
             }
         });
     }
@@ -214,4 +241,34 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
         finish();
     }
 
+    /** Create a file Uri for saving an image or video */
+    private static Uri getOutputMediaFileUri(){
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+
+        return mediaFile;
+    }
 }

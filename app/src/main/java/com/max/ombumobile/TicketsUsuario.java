@@ -2,6 +2,7 @@ package com.max.ombumobile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
 
@@ -105,7 +108,7 @@ public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
                 builder.setPositiveButton("Ver ticket",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                //editarTicket(ticket);
+                                editarTicket(ticket);
                             }
                         });
                 AlertDialog alert = builder.create();
@@ -113,5 +116,11 @@ public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
             }
 
         });
+    }
+
+    public void editarTicket(Ticket ticket) {
+        Intent intent = new Intent(this, EditarTicket.class);
+        intent.putExtra("Ticket", (Serializable) ticket);
+        startActivity(intent);
     }
 }
