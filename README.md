@@ -6,10 +6,6 @@ Integrantes: Addeo Juan Pablo, Crespo Martin, Melul Iván, Ruiz Maximiliano Hern
 
 Usuarios disponibles
 
-Tecnico
-user: mhruiz
-pass: qwe123
-
-Usuario normal
-user: wlopez
+Usuario / Tecnico
+user: mmoreyra
 pass: qwe123
