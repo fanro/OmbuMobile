@@ -11,26 +11,17 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-public class EditarTicket extends AppCompatActivity implements AsyncResponse {
+public class VerTicket extends AppCompatActivity {
 
     private TextView textView_Ticket;
     private TextView textView_Prioridad;
@@ -40,8 +31,6 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     private TextView textView_Incidente;
     private TextView textView_Comentario;
     private TextView textView_Fecha;
-    private Spinner spinner_estados;
-    private EditText editText_ComenTecnico;
     private Ticket ticket;
     private ImageView imagen_Ticket;
     private Bitmap bitmap;
@@ -50,22 +39,9 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_ticket);
+        setContentView(R.layout.activity_ver_ticket);
 
-        Intent intent = getIntent();
-        ticket = (Ticket) intent.getSerializableExtra("Ticket");
-        textView_Ticket = (TextView) findViewById(R.id.textView_Ticket);
-        textView_Prioridad = (TextView) findViewById(R.id.textView_Prioridad);
-        textView_Cliente = (TextView) findViewById(R.id.textView_Cliente);
-        textView_Dependencia = (TextView) findViewById(R.id.textView_Dependencia);
-        textView_Direccion = (TextView) findViewById(R.id.textView_Direccion);
-        textView_Incidente = (TextView) findViewById(R.id.textView_Incidente);
-        textView_Comentario = (TextView) findViewById(R.id.textView_Comentario);
-        editText_ComenTecnico = (EditText) findViewById(R.id.editText_ComenTecnico);
-        textView_Fecha = (TextView) findViewById(R.id.textView_Fecha);
-        imagen_Ticket = (ImageView) findViewById(R.id.imagen_Ticket);
-        editText_ComenTecnico.setSelected(false);
-
+        this.inicializarVista();
         this.setValores(ticket);
 
         imagen_Ticket.setOnClickListener(new View.OnClickListener() {
@@ -86,10 +62,22 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
                         Log.e("ERR_DOWNLOAD_IMG", "Error descargando la imagen del ticket");
                     }
                 });
-
             }
-
         });
+    }
+
+    private void inicializarVista(){
+        Intent intent = getIntent();
+        ticket = (Ticket) intent.getSerializableExtra("Ticket");
+        textView_Ticket = (TextView) findViewById(R.id.textView_Ticket);
+        textView_Prioridad = (TextView) findViewById(R.id.textView_Prioridad);
+        textView_Cliente = (TextView) findViewById(R.id.textView_Cliente);
+        textView_Dependencia = (TextView) findViewById(R.id.textView_Dependencia);
+        textView_Direccion = (TextView) findViewById(R.id.textView_Direccion);
+        textView_Incidente = (TextView) findViewById(R.id.textView_Incidente);
+        textView_Comentario = (TextView) findViewById(R.id.textView_Comentario);
+        textView_Fecha = (TextView) findViewById(R.id.textView_Fecha);
+        imagen_Ticket = (ImageView) findViewById(R.id.imagen_Ticket);
     }
 
     private void setValores(Ticket ticket) {
@@ -111,7 +99,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
             public void onSuccess(byte[] bytes) {
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imagen_Ticket.setImageBitmap(bitmap);
-                uri = getImageUri(EditarTicket.this, bitmap);
+                uri = getImageUri(VerTicket.this, bitmap);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -119,55 +107,6 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
                 Log.e("ERR_DOWNLOAD_IMG", "Error descargando la imagen del ticket " + ticketNro);
             }
         });
-
-        spinner_estados = (Spinner) findViewById(R.id.spinner_estados);
-        List<String> list = new ArrayList<String>();
-        list.add(" ");
-        list.add("EN PROCESO");
-        list.add("EN ESPERA");
-        list.add("CERRADO POR TECNICO");
-        list.add("INTERVENCION OPERADOR");
-        list.add("INTERVENCION SUPERVISOR");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,list);
-
-        dataAdapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
-
-        spinner_estados.setAdapter(dataAdapter);
-    }
-
-    public void editar_ticket(View view){
-
-        //TODO chequear campos
-
-        RestHandler rh = new RestHandler();
-        String[] passing = {"POST", rh.REST_ACTION_EDITAR_TICKET, ticket.getNumero(""), spinner_estados.getSelectedItem().toString(), editText_ComenTecnico.getText().toString(), ticket.getSupervisor()};
-        rh.setActivity(this);
-        rh.execute(passing);
-    }
-
-    public void processFinish(String output){
-
-        JSONObject obj = null;
-        try {
-            obj = new JSONObject(output);
-            Log.d(getString(R.string.app_name), obj.toString());
-        } catch (Throwable t) {
-            Log.e(getString(R.string.app_name), "Could not parse malformed JSON: \"" + output + "\"");
-        }
-
-        try {
-            if(obj.getString("status").equals( "OK")){
-                Toast toast = Toast.makeText(getBaseContext(), obj.getString("status") + ": " + obj.getString("message"), Toast.LENGTH_SHORT);
-                toast.show();
-                // vuelvo
-                onBackPressed();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -176,5 +115,4 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-
 }

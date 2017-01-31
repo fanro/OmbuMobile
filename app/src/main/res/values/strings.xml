@@ -1,26 +1,3 @@
 <resources>
     <string name="app_name">Ombu Mobile</string>
-    <string name="button">Botón</string>
-
-<!--    <string-array name="estados_ticket">
-        <item>EN PROCESO</item>
-        <item>EN ESPERA</item>
-        <item>CERRADO POR TECNICO</item>
-        <item>INTERVENCION OPERADOR</item>
-        <item>INTERVENCION SUPERVISOR</item>
-    </string-array>
-    <string name="title_activity_resultado_contactos">ResultadoContactos</string>
-
-    <string name="area_prompt">Area</string>
-    <string-array name="area_arrays">
-        <item>Infraestructura</item>
-        <item>Material Rodante</item>
-        <item>Patrimonio</item>
-        <item>Presupuesto y Contabilidad</item>
-        <item>Relaciones Laborales</item>
-        <item>Servicios Móviles</item>
-        <item>Tecnología</item>
-    </string-array>-->
-
-
 </resources>

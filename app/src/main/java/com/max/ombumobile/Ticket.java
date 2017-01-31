@@ -47,12 +47,12 @@ public class Ticket implements Serializable{
 
     @Override
     public String toString() {
-
         String res = getNumero("completo") + " - " + estado + "\n";
-        res +=  getPrioridad() + "\n";
-        res +=  cliente + "\n";
-        res +=  dependencia + "\n";
-        res +=  lugar + "\n";
+        res += tstamp + "\n";
+        res += getPrioridad() + "\n";
+        res += cliente + "\n";
+        res += dependencia + "\n";
+        res += lugar + "\n";
 
         return res;
     }

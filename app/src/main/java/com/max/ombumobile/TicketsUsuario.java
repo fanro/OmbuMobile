@@ -108,7 +108,7 @@ public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
                 builder.setPositiveButton("Ver ticket",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                editarTicket(ticket);
+                                verTicket(ticket);
                             }
                         });
                 AlertDialog alert = builder.create();
@@ -118,8 +118,8 @@ public class TicketsUsuario extends AppCompatActivity implements AsyncResponse {
         });
     }
 
-    public void editarTicket(Ticket ticket) {
-        Intent intent = new Intent(this, EditarTicket.class);
+    public void verTicket(Ticket ticket) {
+        Intent intent = new Intent(this, VerTicket.class);
         intent.putExtra("Ticket", (Serializable) ticket);
         startActivity(intent);
     }

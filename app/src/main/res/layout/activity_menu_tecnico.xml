@@ -13,10 +13,10 @@
 
     <ScrollView
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:id="@+id/scrollView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="350dp">
+        android:layout_alignParentRight="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -27,7 +27,7 @@
                 android:id="@+id/button_misTickets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mis Tickets"
+                android:text="Mis Tickets Activos"
                 android:onClick="ticketsTecnico"/>
 
             <Button

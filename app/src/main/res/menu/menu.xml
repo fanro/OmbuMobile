@@ -14,5 +14,4 @@
         android:id="@+id/info"
         android:title="Información"/>
 
-
 </menu>
