@@ -10,54 +10,59 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.max.ombumobile.GeneracionTicketPaso3">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <ScrollView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/scrollView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true">
 
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/spinner_Prioridad"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
-                <!-- Dummy view -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:layout_below="@+id/imagen_Camara"
-                    android:layout_centerHorizontal="true" />
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:id="@+id/spinner_Prioridad"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:descendantFocusability="beforeDescendants"
-                    android:focusableInTouchMode="true"
-                    android:hint="Comentarios"
-                    android:lines="8"
-                    android:minLines="3"
-                    android:gravity="top|left"
-                    android:maxLines="10"
-                    android:scrollbars="vertical"
-                    android:ems="10"
-                    android:id="@+id/editText_ComentarioTicket"
-                    android:layout_below="@+id/spinner_Prioridad"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                        <!-- Dummy view -->
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:layout_centerHorizontal="true" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imagen_Camara"
-                    android:layout_below="@+id/editText_ComentarioTicket"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-        </LinearLayout>
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:descendantFocusability="beforeDescendants"
+                            android:focusableInTouchMode="true"
+                            android:hint="Comentarios"
+                            android:lines="8"
+                            android:minLines="3"
+                            android:gravity="top|left"
+                            android:maxLines="10"
+                            android:scrollbars="vertical"
+                            android:ems="10"
+                            android:id="@+id/editText_ComentarioTicket"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imagen_Camara"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                </LinearLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/button_GenerarTicket"

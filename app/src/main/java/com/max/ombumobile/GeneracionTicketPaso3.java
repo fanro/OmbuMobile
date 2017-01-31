@@ -57,13 +57,10 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generacion_ticket_paso3);
-
         inicializarVista();
-
     }
 
     protected void inicializarVista(){
-
         Intent intent = getIntent();
         ticket = (NuevoTicket) intent.getSerializableExtra("NuevoTicket");
         button_AdjuntarFoto = (Button)findViewById(R.id.button_AdjuntarFoto);
@@ -93,6 +90,8 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+                //TODO: fullsize de las imagenes, tarda mucho en subir
                 //fileUri = getOutputMediaFileUri();
                 //cameraIntent.putExtra( MediaStore.EXTRA_OUTPUT, fileUri );
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -104,6 +103,8 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             imagen_Camara.setImageBitmap(photo);
+
+            //TODO: fullsize de las imagenes, tarda mucho en subir
             //imagen_Camara.setImageURI(fileUri);
             //Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
             //Bitmap bt=Bitmap.createScaledBitmap(bitmap, 300, 300, false);
@@ -112,7 +113,6 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
     }
 
     public void generarTicket(View view) {
-
         if(verificarDatos()){
             ticket.setPrioridad(getPrioridad());
             ticket.setComentario(editText_ComentarioTicket.getText().toString());
@@ -121,7 +121,6 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             Toast toast = Toast.makeText(getBaseContext(), "Complete Prioridad/Comentario", Toast.LENGTH_SHORT);
             toast.show();
         }
-
     }
 
     private void crearTicket() {
@@ -137,6 +136,7 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
 
         BitmapDrawable drawable = (BitmapDrawable) imagen_Camara.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
+        //TODO: fullsize de las imagenes, tarda mucho en subir
         //Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -198,7 +198,6 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
             default:
                 return "";
         }
-
     }
 
     public void processFinish(String output){
@@ -226,7 +225,6 @@ public class GeneracionTicketPaso3 extends AppCompatActivity  implements AsyncRe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     private void cerrarActivity(String ticket){

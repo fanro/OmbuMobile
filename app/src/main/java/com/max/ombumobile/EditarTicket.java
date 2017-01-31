@@ -45,6 +45,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     private Ticket ticket;
     private ImageView imagen_Ticket;
     private Bitmap bitmap;
+    private static final String ESTADO = "**Nuevo Estado**";
     private Uri uri;
 
     @Override
@@ -122,7 +123,7 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
 
         spinner_estados = (Spinner) findViewById(R.id.spinner_estados);
         List<String> list = new ArrayList<String>();
-        list.add(" ");
+        list.add(ESTADO);
         list.add("EN PROCESO");
         list.add("EN ESPERA");
         list.add("CERRADO POR TECNICO");
@@ -139,13 +140,15 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
     }
 
     public void editar_ticket(View view){
-
-        //TODO chequear campos
-
-        RestHandler rh = new RestHandler();
-        String[] passing = {"POST", rh.REST_ACTION_EDITAR_TICKET, ticket.getNumero(""), spinner_estados.getSelectedItem().toString(), editText_ComenTecnico.getText().toString(), ticket.getSupervisor()};
-        rh.setActivity(this);
-        rh.execute(passing);
+        if(verificarDatos()){
+            RestHandler rh = new RestHandler();
+            String[] passing = {"POST", rh.REST_ACTION_EDITAR_TICKET, ticket.getNumero(""), spinner_estados.getSelectedItem().toString(), editText_ComenTecnico.getText().toString(), ticket.getSupervisor()};
+            rh.setActivity(this);
+            rh.execute(passing);
+        } else {
+            Toast toast = Toast.makeText(getBaseContext(), "Complete Nuevo Estado/Comentario", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void processFinish(String output){
@@ -175,6 +178,14 @@ public class EditarTicket extends AppCompatActivity implements AsyncResponse {
         inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    private boolean verificarDatos() {
+        if (spinner_estados.getSelectedItem().toString().equals(ESTADO) ||
+                editText_ComenTecnico.getText().toString().equals("")){
+            return false;
+        }
+        return true;
     }
 
 }

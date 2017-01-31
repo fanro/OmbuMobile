@@ -57,6 +57,11 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
         spinner_Seccion.setEnabled(false);
         spinner_Problema.setEnabled(false);
         button_Siguiente.setEnabled(false);
+
+        //TODO: si me pasan un bien inventariado, listar solo
+        //los incidentes que corresponden al inventario
+        //Igualmente, cuando los operadores reciben el ticket, verifican
+        //el incidente y lo pueden cambiar si no corresponde. Prox version.
         inicializarSpinner();
 
         spinner_Area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -65,10 +70,13 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
                                        int pos, long arg3) {
                 String selected = arg0.getItemAtPosition(pos).toString();
                 if(!selected.equals(AREA)){
-                    spinner_Area.setEnabled(false);
+                    //spinner_Area.setEnabled(false);
+                    limpiarSpinner(spinner_Seccion, SECCION);
+                    limpiarSpinner(spinner_Problema, PROBLEMA);
                     spinner_Seccion.setEnabled(true);
                     area = false;
                     seccion = true;
+                    problema = false;
                     inicializarSpinner();
                 }
             }
@@ -86,8 +94,10 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
                                        int pos, long arg3) {
                 String selected = arg0.getItemAtPosition(pos).toString();
                 if(!selected.equals(SECCION)){
-                    spinner_Seccion.setEnabled(false);
+                    //spinner_Seccion.setEnabled(false);
+                    limpiarSpinner(spinner_Problema, PROBLEMA);
                     spinner_Problema.setEnabled(true);
+                    area = false;
                     seccion = false;
                     problema = true;
                     button_Siguiente.setEnabled(true);
@@ -190,6 +200,19 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
         spinner.setAdapter(dataAdapter);
     }
 
+    private void limpiarSpinner(Spinner spinner, String spinner_desc) {
+        spinner.setAdapter(null);
+        List<String> list = new ArrayList<String>();
+        list.add(spinner_desc);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,list);
+
+        dataAdapter.setDropDownViewResource
+                (android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(dataAdapter);
+    }
+
 
     public String[] parsearIncidentes(JSONArray data){
         String[] incidentes;
@@ -216,13 +239,15 @@ public class GeneracionTicketPaso2 extends AppCompatActivity implements AsyncRes
             startActivityForResult(intent, REQUEST_CODE_PASO_3);
         }
         else {
-            Toast toast = Toast.makeText(getBaseContext(), "Seleccione un problema válido", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getBaseContext(), "Seleccione un opcion válida", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
 
     private boolean verificarDatos() {
-        if (spinner_Problema.getSelectedItem().toString().equals(PROBLEMA)){
+        if (spinner_Problema.getSelectedItem().toString().equals(PROBLEMA) ||
+                spinner_Seccion.getSelectedItem().toString().equals(SECCION) ||
+                spinner_Area.getSelectedItem().toString().equals(AREA)){
             return false;
         }
             return true;
