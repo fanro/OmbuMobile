@@ -3,30 +3,33 @@ package com.max.ombumobile;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
-public class MenuTecnico extends AppCompatActivity {
+public class Menu extends AppCompatActivity {
+
+    private Button button_nuevoTicket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_tecnico);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
+        setContentView(R.layout.activity_menu);
+        button_nuevoTicket = (Button)findViewById(R.id.button_nuevoTicket);
     }
 
     //	ignoro boton back android, se debe desloguear el usuario
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
@@ -90,9 +93,27 @@ public class MenuTecnico extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //  Tickets Tecnico
-    public void ticketsTecnico(View view) {
-        Intent intent = new Intent(this, TicketsTecnico.class);
+    //  Nuevo ticket
+    public void nuevoTicket(View view) {
+        Intent intent = new Intent(this, GeneracionTicketPaso1.class);
+        startActivity(intent);
+    }
+
+    //  tickets activos
+    public void ticketsActivos(View view) {
+        Intent intent = new Intent(this, TicketsUsuario.class);
+        Bundle datos = new Bundle();
+        datos.putString("modo","activos");
+        intent.putExtras(datos);
+        startActivity(intent);
+    }
+
+    //  tickets historicos
+    public void ticketsFinalizados(View view) {
+        Intent intent = new Intent(this, TicketsUsuario.class);
+        Bundle datos = new Bundle();
+        datos.putString("modo","finalizados");
+        intent.putExtras(datos);
         startActivity(intent);
     }
 

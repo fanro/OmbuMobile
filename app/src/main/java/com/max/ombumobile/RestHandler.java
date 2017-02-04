@@ -16,18 +16,23 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by max on 25/10/2016.
- */
-
 public class RestHandler extends AsyncTask<String, Long, String> {
 
     public static final String REST_ACTION_LOGIN = "http://www.fiscalias.gob.ar/mjys/denuncia/login.php";
-    //public static final String REST_ACTION_LOGIN = "http://10.0.2.2/kiwi/www/webservices/denuncia/login.php";
-    public static final String RIGHT_TECNICO = "ombu.soporte.tecnico";
-    public static final String REST_OK = "OK";
+    public static final String REST_ACTION_INVENTARIO = "http://www.fiscalias.gob.ar/dpam/tickets/inventario.php";
+    public static final String REST_ACTION_GET_TICKETS_TEC = "http://www.fiscalias.gob.ar/dpam/tickets/ticketsTecnico.php";
+    public static final String REST_ACTION_GET_TICKETS_USR = "http://www.fiscalias.gob.ar/dpam/tickets/ticketsUsuario.php";
+    public static final String REST_ACTION_EDITAR_TICKET = "http://www.fiscalias.gob.ar/dpam/tickets/editarTicket.php";
+    public static final String REST_ACTION_GET_DEPEN = "http://www.fiscalias.gob.ar/dpam/tickets/getDependencias.php";
+    public static final String REST_ACTION_GET_CONT = "http://www.fiscalias.gob.ar/dpam/tickets/getContactos.php";
+    public static final String REST_ACTION_GET_INC = "http://www.fiscalias.gob.ar/dpam/tickets/incidente.php";
+    public static final String REST_ACTION_NUEVO_TICKET = "http://www.fiscalias.gob.ar/dpam/tickets/crearTicket.php";
     private ProgressDialog progress;
     public AsyncResponse delegate = null;
+
+    public void setProgress(ProgressDialog progress) {
+        this.progress = progress;
+    }
 
     public void setActivity(Activity activity){
         progress = new ProgressDialog(activity);
@@ -65,6 +70,8 @@ public class RestHandler extends AsyncTask<String, Long, String> {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.connect();
 
+            Usuario usr = Usuario.getInstance();
+
             // DEPENDE DE LA URL, LOS PARAMETROS QUE MANDO
             JSONObject jsonParam = new JSONObject();
             switch (args[1]){
@@ -72,13 +79,59 @@ public class RestHandler extends AsyncTask<String, Long, String> {
                     jsonParam.put("user", args[2]);
                     jsonParam.put("pass", args[3]);
                     break;
+                case REST_ACTION_INVENTARIO:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("inventario", args[2]);
+                    break;
+                case REST_ACTION_GET_TICKETS_TEC:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("tecnico", usr.getUser_id());
+                    break;
+                case REST_ACTION_GET_TICKETS_USR:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("usuario", usr.getUser_id());
+                    jsonParam.put("modo", args[2]);
+                    break;
+                case REST_ACTION_EDITAR_TICKET:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("ticket", args[2]);
+                    jsonParam.put("estado", args[3]);
+                    jsonParam.put("comentario", args[4]);
+                    jsonParam.put("tecnico", usr.getUser_id());
+                    jsonParam.put("supervisor", args[5]);
+                    break;
+                case REST_ACTION_GET_DEPEN:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    break;
+                case REST_ACTION_GET_CONT:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("apellido", args[2]);
+                    jsonParam.put("nombre", args[3]);
+                    jsonParam.put("dependencia", args[4]);
+                    break;
+                case REST_ACTION_GET_INC:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("inventario", "");
+                    jsonParam.put("area",args[2]);
+                    jsonParam.put("seccion", args[3]);
+                    jsonParam.put("problema", args[4]);
+                    break;
+                case REST_ACTION_NUEVO_TICKET:
+                    jsonParam.put("session_id", usr.getSession_id());
+                    jsonParam.put("usuario", usr.getUser_id());
+                    jsonParam.put("incidente", args[2]);
+                    jsonParam.put("comentarios",args[3]);
+                    jsonParam.put("bien_desc", args[4]);
+                    jsonParam.put("bien_inv", args[5]);
+                    jsonParam.put("bien_nro_inv", args[6]);
+                    jsonParam.put("prioridad", args[7]);
+                    break;
                 default:
                     break;
             }
             OutputStreamWriter out = new OutputStreamWriter(urlConnection.getOutputStream());
             out.write(jsonParam.toString());
             out.close();
-
 
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();

@@ -4,6 +4,6 @@ UTN - FRBA 082010 - Desarrollo de aplicaciones para dispositivos Moviles - Curso
 
 Integrantes: Addeo Juan Pablo, Crespo Martin, Melul Iván, Ruiz Maximiliano Hernan
 
-Usuarios disponibles
-user: mhruiz
+Usuario / Tecnico
+user: mmoreyra
 pass: qwe123
